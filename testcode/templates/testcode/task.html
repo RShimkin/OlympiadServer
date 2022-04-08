@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block js %}
+<script src="{% static '/js/task.js' %}"></script>
+<script src="{% static '/js/codemirror.js' %}"></script>
+<script src="{% static '/mode/python/python.js' %}"></script>
+<script src="{% static '/mode/clike/clike.js' %}"></script>
+<script src="{% static '/addon/scroll/simplescrollbars.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{% static '/css/codemirror.css' %}">
+<link rel="stylesheet" href="{% static '/theme/dracula.css' %}">
+<link rel="stylesheet" href="{% static '/addon/scroll/simplescrollbars.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .CodeMirror {
+        margin: 0 auto;
+        margin: 2%;
+        /*border: 4px solid #3a3a3a; */
+        font-size: 15px;
+        font-family: 'Viga', sans-serif;
+        border-radius: 1px;
+        line-height: 1.2em;
+        height: 20em;
+    }
+</style>
+
+<h2>{{ task.name }}</h2>
+
+<p>{{ task.description }}</p>
+
+<form action="{% url 'task' task.name %}" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success sb">Отправить</button>
+</form>
+<div id="error">
+    {% if error %}
+        ошибка: {{ error }}
+    {% endif %}
+</div>
+<div id="out">
+    {% if out %}
+        вывод: {{ out }}
+    {% endif %}
+</div>
+<div id="cerror">
+    {% if cerror %}
+        Ошибка компиляции: {{ cerror }}
+    {% endif %}
+</div>
+<div id="cout">
+    {% if cout %}
+        вывод компиляции: {{ cout }}
+    {% endif %}
+</div>
+
+<div id="rating">
+    {% if rating %}
+        <h6>Рейтинг:</h6>
+        {% for res in rating%}
+            <p>{{res.uname}} -> {{res.points}} ({{res.time}})</p>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{# extends 'testcode/base.html' #}
+
+{% block content %}
+<h1>{{title}}</h1>
+
+<form action="{% url 'profile' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+
+{% endblock %}
